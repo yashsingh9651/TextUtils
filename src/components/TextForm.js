@@ -22,9 +22,7 @@ export default function TextForm(props) {
   
   
   const copyAll = () => {
-    let myBox = document.getElementById("myBox");
-    myBox.select();
-    navigator.clipboard.writeText(myBox.value);
+    navigator.clipboard.writeText(text);
     setCopyText("Copied");
     props.showAlert("Copied to clipboard!","success");
     setTimeout(() => {
@@ -42,9 +40,13 @@ export default function TextForm(props) {
   const extractEmails = () => {
     let newEmail = text.match(
       /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi
-    );
+    )||text.match(" ");
     setEmail(newEmail);
-    props.showAlert("Email Extracted","success");
+    if(text.match(
+      /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi
+    )){
+      props.showAlert("Email Extracted","success");
+    }
   };
   const emailChange=(event)=>{
     setEmail(event.target.value)
@@ -55,9 +57,7 @@ export default function TextForm(props) {
     props.showAlert("Cleared","success");
   };
   const copyEmail = ()=>{
-    let emailBox = document.getElementById('emailBox');
-    emailBox.select();
-    navigator.clipboard.writeText(emailBox.value);
+    navigator.clipboard.writeText(email);
     setCopyEmailText("Copied");
     props.showAlert("Copied to clipboard!","success");
     setTimeout(() => {
@@ -74,7 +74,7 @@ export default function TextForm(props) {
     <>
       <div>
         <div className="mb-3 ">
-          <h1>{props.heading}</h1>
+          <h1>Enter Text Here</h1>
           <textarea
             value={text}
             onChange={onChange}
@@ -83,34 +83,34 @@ export default function TextForm(props) {
             rows="3"
           ></textarea>
         </div>
-        <button onClick={upperCase} className=" btn btn-primary">
+        <button disabled={text.length===0} onClick={upperCase} className=" btn btn-primary my-2 mx-3">
           Convert to Upper Case
         </button>
-        <button onClick={lowerCase} className="btn mx-3 btn-primary">
+        <button disabled={text.length===0} onClick={lowerCase} className="btn mx-3 my-2 btn-primary">
           Convert to Lower Case
         </button>
-        <button onClick={clearAll} className="btn mx-3 btn-primary">
+        <button disabled={text.length===0} onClick={clearAll} className="btn mx-3 my-2 btn-primary">
           Clear Text
         </button>
-        <button onClick={copyAll} className="btn mx-3 btn-primary">
+        <button disabled={text.length===0} onClick={copyAll} className="btn mx-3 my-2 btn-primary">
           {copyText}
         </button>
-        <button onClick={removeExtraSpace} className="btn mx-3 btn-primary">
+        <button disabled={text.length===0} onClick={removeExtraSpace} className="btn mx-3 my-2 btn-primary">
           Remove Extra Spaces
         </button>
       </div>
       <div className=" container my-3">
         <h2>Your Text Summary</h2>
         <p>
-          {text.split(" ").length} words and {text.length} Characters
+          {text.split(/\s+/).filter((element)=>{return element.length!==0}).length} words and {text.length} Characters
         </p>
-        <p> You can read this in {0.008 * text.split(" ").length} Minutes</p>
+        <p>You can read this in {0.008 * text.split(" ").filter((element)=>{return element.length!==0}).length} Minutes</p>
         <h3>Preview</h3>
-        <p>{text}</p>
+        <p>{text.length>0?text:'Nothing to Preview'}</p>
       </div>
       <div>
         <h1>Extract Emails</h1>
-        <button className="btn btn-primary my-3" onClick={extractEmails}>
+        <button className="btn btn-primary my-3" disabled={text.length===0} onClick={extractEmails}>
           Extract Emails
         </button>
         <p>Emails: <textarea
@@ -120,10 +120,10 @@ export default function TextForm(props) {
             className={`form-control bg-${props.mode} text-${props.mode==='dark' ? 'light' :'dark'}`}
             rows="3"
           ></textarea></p>
-        <button className="btn btn-primary my-3" onClick={clearEmail}>
+        <button className="btn btn-primary my-3" disabled={email.length===0} onClick={clearEmail}>
           Clear
         </button>
-        <button onClick={copyEmail} className="btn mx-3 btn-primary">
+        <button disabled={email.length===0} onClick={copyEmail} className="btn mx-3 my-2 btn-primary">
           {copyEmailText}
         </button>
       </div>

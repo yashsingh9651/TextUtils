@@ -1,12 +1,7 @@
-import './App.css';
 import React, { useState } from "react";
 import TextForm from './components/TextForm';
 import Alert from './components/Alert';
 import Navbar from './components/Navbar';
-
-
-
-
 
 function App() {
 const [mode,setMode]=useState('light');
@@ -25,10 +20,9 @@ const toggleMode = ()=>{
     showAlert("light mode has been enabled","success");
     document.title='Textutils - Light mode'
   }
-}
-
+};
 const A = ()=>{
-  if(mode==='light'||mode==='dark'){
+  if(mode==='light'||mode==='dark'||mode==='#283618'){
     setMode('#faedcd');
     document.body.style.backgroundColor='#faedcd';
     document.body.style.color='black';
@@ -40,9 +34,9 @@ const A = ()=>{
     document.body.style.color='black';
     showAlert("light mode has been enabled","success");
   }
-}
+};
 const B = ()=>{
-  if(mode==='light'||mode==='dark'){
+  if(mode==='light'||mode==='dark'||mode==='#faedcd'){
     setMode('#283618');
     document.body.style.backgroundColor='#283618';
     document.body.style.color='white';
@@ -54,10 +48,9 @@ const B = ()=>{
     document.body.style.color='black';
     showAlert("light mode has been enabled","success");
   }
-}
-
-// Alert
-const [alert, setAlert] = useState(null)
+};
+// ? Alert
+const [alert, setAlert] = useState(null);
   const showAlert = (message,type)=>{
     setAlert({
       msg:message,
@@ -66,18 +59,15 @@ const [alert, setAlert] = useState(null)
     setTimeout(() => {
       setAlert(null)
     }, 1800);
-  }
-
-
+  };
   return (
     <>
-<Navbar showAlert={showAlert} title="Yash Singh" about="Monster" mode={mode} toggle={toggleMode} buttonA={A} buttonB={B} />
+<Navbar showAlert={showAlert} mode={mode} toggle={toggleMode} buttonA={A} buttonB={B} />
 <div className="container">
 <Alert alert={alert}/>
-<TextForm showAlert={showAlert} heading="This is an Example" mode={mode} />
+<TextForm showAlert={showAlert} mode={mode}/>
 </div>
   </>
   );
-}
-
+};
 export default App;
